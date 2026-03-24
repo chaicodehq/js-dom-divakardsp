@@ -89,25 +89,64 @@
  *   // => deep clone of stage with id "stage-clone"
  */
 export function insertDancer(stage, newDancer, referenceDancer) {
-  // Your code here
+  if(!stage || ! newDancer) return false;
+  if(referenceDancer){
+    stage.insertBefore(newDancer, referenceDancer);
+    return true;
+  }
+
+  stage.appendChild(newDancer);
+  return true;
+
 }
 
 export function cloneDancer(dancer, deep) {
-  // Your code here
+  if(! dancer) return null;
+  const copy = dancer.cloneNode(deep);
+  if(dancer.id){
+    copy.id = `${dancer.id}-copy`;
+  }
+  return copy;
 }
 
 export function replaceDancer(stage, oldDancer, newDancer) {
-  // Your code here
+  if(!stage || !oldDancer || !newDancer) return null;
+  return stage.replaceChild(newDancer, oldDancer);
 }
 
 export function removeDancer(stage, dancer) {
-  // Your code here
+  if(!stage || !dancer) return null;
+  if(dancer.parentElement !== stage) return null;
+  return stage.removeChild(dancer);
 }
 
 export function rearrangeStage(stage, order) {
-  // Your code here
+  if(! stage) return false;
+  if(! Array.isArray(order)) return false;
+  if(order.length !== stage.children.length) return false;
+  for (let index = 0; index < order.length; index++) {
+    if(
+      typeof order[index] !== "number" ||
+      order[index] < 0 ||
+      order[index] >= stage.children.length
+    ) return false;
+  }
+
+  const childrens = Array.from(stage.children);
+  const copiedVersion = [...childrens];
+
+  stage.innerHTML = "";
+  order.forEach((index) => {
+    stage.appendChild(copiedVersion[index]);
+  })
+
+  return true;
+
 }
 
 export function duplicateFormation(stage) {
-  // Your code here
+  if(!stage) return null;
+  const deepClone = stage.cloneNode(true);
+  deepClone.id = `${stage.id}-clone`;
+  return deepClone;
 }

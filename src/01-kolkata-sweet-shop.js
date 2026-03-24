@@ -61,13 +61,36 @@
  *   // => item now has <span class="special-badge">Bestseller</span>
  */
 export function createSweetItem(name, price, category) {
-  // Your code here
+  if(typeof name !== "string" || typeof price !== "number" || typeof category !== "string") return null;
+
+  if(! name || ! price || ! category) return null;
+  const div = document.createElement("div");
+  div.classList.add("sweet-item");
+  div.innerHTML = `<h3>${name}</h3>
+    <p class="price">₹${price}</p><span class="category">${category}</span> 
+  `
+  return div
 }
 
 export function buildMenuBoard(sweets) {
-  // Your code here
+  if(! Array.isArray(sweets)) return null;
+  const menuBoardDiv = document.createElement("div");
+  menuBoardDiv.id = "menu-board";
+  sweets.forEach((sweet) => {
+    const item = createSweetItem(sweet.name, sweet.price, sweet.category);
+    menuBoardDiv.appendChild(item);
+  })
+  return menuBoardDiv;
+  
 }
 
 export function addSpecialBadge(sweetElement, badgeText) {
-  // Your code here
+  if(! sweetElement) return null;
+  if(! badgeText || typeof badgeText !== "string") return null;
+
+  const specialBadgeSpan = document.createElement("span");
+  specialBadgeSpan.classList.add("special-badge");
+  specialBadgeSpan.textContent = badgeText;
+  sweetElement.appendChild(specialBadgeSpan);
+  return sweetElement;
 }
